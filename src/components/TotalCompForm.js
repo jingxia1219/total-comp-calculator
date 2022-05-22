@@ -38,7 +38,13 @@ function TotalCompForm(){
         }
       } else if(baseInput === ''){
         setBase('')
-        setTotalComp(prev => {delete prev[base]})
+        setTotalComp(prev => { 
+            let prevTotal = prev 
+            console.log(prevTotal) 
+            delete prevTotal.base
+            console.log(prevTotal) 
+            return prevTotal
+        })
       }
     }
     function annualBonusHandler(e) {
@@ -52,7 +58,13 @@ function TotalCompForm(){
         }
       }else if(annualBonusInput === ''){
         setAnnualBonus('')
-        setTotalComp(prev => {delete prev[annualBonus]})
+        setTotalComp(prev => { 
+            let prevTotal = prev 
+            console.log(prevTotal) 
+            delete prevTotal.annualBonus
+            console.log(prevTotal) 
+            return prevTotal
+        })
       }
     }
     function stockHandler(e) {
@@ -66,7 +78,13 @@ function TotalCompForm(){
         }
       }else if(stockInput === ''){
         setStock('')
-        setTotalComp(prev => {delete prev[stock]})
+        setTotalComp(prev => { 
+            let prevTotal = prev
+            console.log(prevTotal) 
+            delete prevTotal.stock
+            console.log(prevTotal) 
+            return prevTotal
+        })
       }
     }
     function signOnHandler(e) {
@@ -80,7 +98,11 @@ function TotalCompForm(){
         }
       }else if(signOnInput === ''){
         setSignOn('');
-        setTotalComp(prev => {delete prev[signOn]})
+        setTotalComp(prev => { 
+            let prevTotal = prev 
+            delete prevTotal.signOn
+            return prevTotal
+        })
       }
     }
     function otherHandler(e) {
@@ -94,7 +116,11 @@ function TotalCompForm(){
         }
       } else if(otherInput === ''){
         setOther('');
-        setTotalComp(prev => {delete prev[other]})
+        setTotalComp(prev => { 
+            let prevTotal = prev 
+            delete prevTotal.other
+            return prevTotal
+        })
       }
     }
     let totalCompDisplay;

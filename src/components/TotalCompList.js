@@ -1,7 +1,8 @@
 import './TotalCompItem';
 import TotalCompItem from './TotalCompItem';
 
-function TotalCompList(){
+function TotalCompList(props){
+    
     return (
         <>
         <TotalCompItem />
