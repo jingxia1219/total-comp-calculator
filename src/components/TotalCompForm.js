@@ -1,13 +1,15 @@
 import { useState } from "react";
 
-function TotalCompForm(){
+function TotalCompForm(props){
     const [totalComp, setTotalComp] = useState(null);
     const [base, setBase] = useState("");
     const [annualBonus, setAnnualBonus] = useState("");
     const [stock, setStock] = useState("");
     const [other, setOther] = useState("");
     const [signOn, setSignOn] = useState("");
+    const [companyName,setCompanyName] = useState('')
     const [compareArr,setCompareArr] = useState([]);
+
     function resetHandler() {
       setTotalComp(null);
       setBase("");
@@ -15,18 +17,29 @@ function TotalCompForm(){
       setStock("");
       setOther("");
       setSignOn("");
+      setCompanyName("")
     }
+
+ 
     function saveHandler() {
-      setCompareArr(prev => prev.concat(totalComp))
-      console.log(compareArr);
+        const total = Object.values(totalComp).reduce((acc,el)=> acc+el,0);
+
+      setCompareArr(prev => prev.concat({...totalComp, total:total,company:companyName}))
+      props.getCompArr({...totalComp, total:total,company:companyName})
+      
       setTotalComp(null);
       setBase("");
       setAnnualBonus("");
       setStock("");
       setOther("");
       setSignOn("");
+      setCompanyName("")
     }
-  
+    function nameHandler(e){
+        const name = e.target.value
+        setCompanyName(name)
+    }
+
     function baseHandler(e) {
       const baseInput = e.target.value;
       if (baseInput > 0) {
@@ -39,10 +52,8 @@ function TotalCompForm(){
       } else if(baseInput === ''){
         setBase('')
         setTotalComp(prev => { 
-            let prevTotal = prev 
-            console.log(prevTotal) 
-            delete prevTotal.base
-            console.log(prevTotal) 
+            let prevTotal = prev  
+            delete prevTotal.base 
             return prevTotal
         })
       }
@@ -59,10 +70,8 @@ function TotalCompForm(){
       }else if(annualBonusInput === ''){
         setAnnualBonus('')
         setTotalComp(prev => { 
-            let prevTotal = prev 
-            console.log(prevTotal) 
-            delete prevTotal.annualBonus
-            console.log(prevTotal) 
+            let prevTotal = prev  
+            delete prevTotal.annualBonus 
             return prevTotal
         })
       }
@@ -79,10 +88,8 @@ function TotalCompForm(){
       }else if(stockInput === ''){
         setStock('')
         setTotalComp(prev => { 
-            let prevTotal = prev
-            console.log(prevTotal) 
-            delete prevTotal.stock
-            console.log(prevTotal) 
+            let prevTotal = prev 
+            delete prevTotal.stock 
             return prevTotal
         })
       }
@@ -136,6 +143,14 @@ function TotalCompForm(){
 
   <h2 className="total-comp">{totalCompDisplay}</h2>
   <button onClick={resetHandler}>reset</button>
+
+  <h3>Company Name: </h3>
+  <input
+    value={companyName}
+    onChange={nameHandler}
+    placeholder="company name"
+    type="text"
+  ></input>
 
   <h3>Base salary (in thousand):&nbsp;{base !== "" ? base + "k" : ""} </h3>
   <input
