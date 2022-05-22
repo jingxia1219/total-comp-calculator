@@ -2,73 +2,106 @@ import "./index.css";
 import { useState } from "react";
 
 export default function App() {
-  const [totalComp, setTotalComp] = useState("");
+  const [totalComp, setTotalComp] = useState(null);
   const [base, setBase] = useState("");
   const [annualBonus, setAnnualBonus] = useState("");
   const [stock, setStock] = useState("");
   const [other, setOther] = useState("");
   const [signOn, setSignOn] = useState("");
+  const [compareArr,setCompareArr] = useState([]);
   function resetHandler() {
-    setTotalComp("");
+    setTotalComp(null);
     setBase("");
     setAnnualBonus("");
     setStock("");
     setOther("");
     setSignOn("");
   }
-  function calculateHandler() {
-    let total = 0;
-    if (base !== "") total = +base + total;
-    console.log(total);
-    if (annualBonus !== "") total = +annualBonus + total;
-    console.log(total);
-    if (stock !== "") total = +stock + total;
-    console.log(total);
-    if (other !== "") total = +other + total;
-    console.log(total);
-    if (signOn !== "") total = +signOn + total;
-    console.log(total);
-    if (total > 0) setTotalComp("total: " + total + "k");
+  function saveHandler() {
+    setCompareArr(prev => prev.concat(totalComp))
   }
 
   function baseHandler(e) {
     const baseInput = e.target.value;
     if (baseInput > 0) {
       setBase(baseInput);
+      if(totalComp){
+        setTotalComp( prev => {return{...prev,base:+baseInput}})
+      } else { // if totalComp is null
+        setTotalComp({base:+baseInput})
+      }
+    } else if(baseInput === ''){
+      setBase('')
+      setTotalComp(prev => {delete prev[base]})
     }
   }
   function annualBonusHandler(e) {
     const annualBonusInput = e.target.value;
     if (annualBonusInput > 0) {
       setAnnualBonus(annualBonusInput);
+      if(totalComp){
+        setTotalComp( prev => {return{...prev,annualBonus:+annualBonusInput}})
+      } else { // if totalComp is null
+        setTotalComp({annualBonus:+annualBonusInput})
+      }
+    }else if(annualBonusInput === ''){
+      setAnnualBonus('')
+      setTotalComp(prev => {delete prev[annualBonus]})
     }
   }
   function stockHandler(e) {
     const stockInput = e.target.value;
     if (stockInput > 0) {
       setStock(stockInput);
+      if(totalComp){
+        setTotalComp( prev => {return{...prev,stock:+stockInput}})
+      } else { // if totalComp is null
+        setTotalComp({stock:+stockInput})
+      }
+    }else if(stockInput === ''){
+      setStock('')
+      setTotalComp(prev => {delete prev[stock]})
     }
   }
   function signOnHandler(e) {
     const signOnInput = e.target.value;
     if (signOnInput > 0) {
       setSignOn(signOnInput);
+      if(totalComp){
+        setTotalComp( prev => {return{...prev,signOn:+signOnInput}})
+      } else { // if totalComp is null
+        setTotalComp({signOn:+signOnInput})
+      }
+    }else if(signOnInput === ''){
+      setSignOn('');
+      setTotalComp(prev => {delete prev[signOn]})
     }
   }
   function otherHandler(e) {
     const otherInput = e.target.value;
     if (otherInput > 0) {
       setOther(otherInput);
+      if(totalComp){
+        setTotalComp( prev => {return{...prev,other:+otherInput}})
+      } else { // if totalComp is null
+        setTotalComp({other:+otherInput})
+      }
+    } else if(otherInput === ''){
+      setOther('');
+      setTotalComp(prev => {delete prev[other]})
     }
   }
-
+  let totalCompDisplay;
+  if(totalComp){
+    totalCompDisplay = Object.values(totalComp).reduce((acc,el)=> acc+el,0)
+  }
   let display = (
     <div className="input-box">
       <h1 value={base} className="header">
         Total Compensation
       </h1>
 
-      <h2 className="total-comp">{totalComp}</h2>
+      <h2 className="total-comp">{totalCompDisplay}</h2>
       <button onClick={resetHandler}>reset</button>
 
       <h3>Base salary (in thousand):&nbsp;{base !== "" ? base + "k" : ""} </h3>
@@ -130,7 +163,7 @@ export default function App() {
         min="0"
       ></input>
       <br />
-      <button onClick={calculateHandler}>Calculate</button>
+      <button onClick={saveHandler}>save to compare</button>
     </div>
   );
 
